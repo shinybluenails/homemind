@@ -1,76 +1,99 @@
-<h1 align="center">electron-app</h1>
-
-<p align="center">An Electron application with Vue3 and TypeScript</p>
+# HomeMind
 
 <p align="center">
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/electron" alt="electron-version">
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/electron-vite" alt="electron-vite-version" />
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/electron-builder" alt="electron-builder-version" />
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/vite" alt="vite-version" />
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/vue" alt="vue-version" />
-<img src="https://img.shields.io/github/package-json/dependency-version/alex8088/electron-vite-boilerplate/dev/typescript" alt="typescript-version" />
+  <img src="build/icon.png" alt="HomeMind logo" width="180" />
 </p>
 
-<p align='center'>
-<img src='./build/electron-vite-vue-ts.png'/>
-</p>
+Your personal AI, running at home. HomeMind is a desktop app that lets you chat with large language models entirely on your own machine — no cloud, no data leaving your device.
+
+Built with Electron, React, TypeScript, and [Ollama](https://ollama.com).
 
 ## Features
 
-- 💡 Optimize asset handling
-- 🚀 Fast HMR for renderer processes
-- 🔥 Hot reloading for main process and preload scripts
-- 🔌 Easy to debug
-- 🔒 Compile to v8 bytecode to protect source code
+- **100% local** — your conversations never leave your machine
+- **Chat** with any Ollama-compatible model using a clean, streaming interface
+- **Model manager** — browse, download, and delete models from a built-in registry (Llama, Gemma, Phi, Qwen, Mistral, DeepSeek, and more)
+- **Configurable** — set a system prompt, adjust temperature, and configure context window size per session
+- **Bundled Ollama** — ships with the Ollama binary; no separate install needed
+
+## Requirements
+
+- Windows (macOS/Linux builds available but not primary target)
+- ~4 GB free disk space for a small model (e.g. Llama 3.2 1B = 1.3 GB)
+- 8 GB RAM recommended; 16 GB+ for larger models
 
 ## Getting Started
 
-Read [documentation](https://electron-vite.org/) for more details.
+### 1. Install dependencies
 
-- [Configuring](https://electron-vite.org/config/)
-- [Development](https://electron-vite.org/guide/dev.html)
-- [Asset Handling](https://electron-vite.org/guide/assets.html)
-- [HMR](https://electron-vite.org/guide/hmr.html) & [Hot Reloading](https://electron-vite.org/guide/hot-reloading.html)
-- [Debugging](https://electron-vite.org/guide/debugging.html)
-- [Source code protection](https://electron-vite.org/guide/source-code-protection.html)
-- [Distribution](https://electron-vite.org/guide/distribution.html)
-- [Troubleshooting](https://electron-vite.org/guide/troubleshooting.html)
+```bash
+pnpm install
+```
 
-You can also use the [create-electron](https://github.com/alex8088/quick-start/tree/master/packages/create-electron) tool to scaffold your project for other frameworks (e.g. `React`, `Svelte` or `Solid`).
+### 2. Set up Ollama
+
+Download the bundled Ollama binary for your platform:
+
+```bash
+# Windows
+pnpm run setup:ollama:win
+
+# macOS
+pnpm run setup:ollama:mac
+```
+
+### 3. Run in development
+
+```bash
+pnpm dev
+```
+
+The app will launch with hot reload enabled. The Ollama server starts automatically in the background.
+
+## Building
+
+```bash
+# Type-check + build (all platforms)
+pnpm build
+
+# Package a Windows installer
+pnpm run build:win
+
+# Package a macOS app
+pnpm run build:mac
+
+# Package a Linux app
+pnpm run build:linux
+
+# Build without packaging (for local testing)
+pnpm run build:unpack
+```
+
+## Project Structure
+
+```
+src/
+  main/           # Electron main process
+    index.ts          # App entry, IPC handlers
+    ollama-client.ts  # Ollama HTTP API client
+    ollama-process.ts # Manages the bundled Ollama binary
+  preload/        # Secure bridge between main and renderer
+  renderer/       # React UI
+    screens/
+      Chat.tsx        # Streaming chat interface
+      Models.tsx      # Model browser and downloader
+      Settings.tsx    # System prompt, temperature, context size
+resources/
+  win32/          # Platform Ollama binaries (added by setup script)
+  darwin/
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details. Third-party notices are in [NOTICES](NOTICES).
 
 ## Recommended IDE Setup
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
-
-## Project Setup
-
-### Install
-
-```bash
-$ npm install
-```
-
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
-
-## Examples
-
-- [electron-vite-bytecode-example](https://github.com/alex8088/electron-vite-bytecode-example), source code protection
-- [electron-vite-decorator-example](https://github.com/alex8088/electron-vite-decorator-example), typescipt decorator
-- [electron-vite-worker-example](https://github.com/alex8088/electron-vite-worker-example), worker and fork
+[VS Code](https://code.visualstudio.com/) with the following extensions:
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
