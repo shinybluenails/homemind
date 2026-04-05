@@ -4,6 +4,7 @@ import { Button } from '@renderer/components/ui/button'
 import { cn } from '@renderer/lib/utils'
 import type { Settings } from '@renderer/hooks/useSettings'
 import type { ChatSession, ChatMessage } from '@renderer/hooks/useChats'
+import { MarkdownMessage } from '@renderer/components/MarkdownMessage'
 
 interface ChatProps {
   settings: Settings
@@ -231,13 +232,13 @@ export function Chat({ settings, activeChat, onUpdateChat, onCreateChat }: ChatP
             >
               <div
                 className={cn(
-                  'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap break-words leading-relaxed',
+                  'max-w-[80%] rounded-2xl px-4 py-2.5 text-sm break-words',
                   msg.role === 'user'
-                    ? 'bg-primary text-primary-foreground rounded-br-sm'
+                    ? 'bg-primary text-primary-foreground rounded-br-sm whitespace-pre-wrap leading-relaxed'
                     : 'bg-muted text-foreground rounded-bl-sm'
                 )}
               >
-                {msg.content}
+                {msg.role === 'user' ? msg.content : <MarkdownMessage content={msg.content} />}
               </div>
             </div>
           ))}
@@ -245,8 +246,10 @@ export function Chat({ settings, activeChat, onUpdateChat, onCreateChat }: ChatP
           {/* Streaming message */}
           {isStreaming && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm bg-muted text-foreground whitespace-pre-wrap break-words leading-relaxed min-w-[60px] min-h-[36px]">
-                {streamingContent || (
+              <div className="max-w-[80%] rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm bg-muted text-foreground break-words min-w-[60px] min-h-[36px]">
+                {streamingContent ? (
+                  <MarkdownMessage content={streamingContent} />
+                ) : (
                   <span className="flex gap-1 items-center h-full">
                     <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:0ms]" />
                     <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:150ms]" />
