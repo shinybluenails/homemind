@@ -1,4 +1,4 @@
-import { Package, Settings2, Brain, Plus, Trash2, MessageSquare } from 'lucide-react'
+import { Package, Settings2, Plus, Trash2, MessageSquare } from 'lucide-react'
 import { cn } from '@renderer/lib/utils'
 import type { ChatSession } from '@renderer/hooks/useChats'
 
@@ -51,9 +51,12 @@ export function Sidebar({
   return (
     <aside className="w-56 shrink-0 flex flex-col border-r border-border bg-card h-full">
       {/* Brand header */}
-      <div className="flex items-center gap-2.5 px-4 py-4 border-b border-border shrink-0">
-        <Brain className="w-5 h-5 text-primary shrink-0" />
-        <span className="font-bold text-foreground tracking-tight flex-1">HomeMind</span>
+      <div className="flex items-center justify-center px-4 py-4 border-b border-border shrink-0">
+        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-sm">
+          <span className="text-primary-foreground font-bold text-sm tracking-tight select-none">
+            Hm
+          </span>
+        </div>
       </div>
 
       {/* New Chat button */}

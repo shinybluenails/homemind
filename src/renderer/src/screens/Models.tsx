@@ -6,7 +6,7 @@ import { Progress } from '@renderer/components/ui/progress'
 import { Badge } from '@renderer/components/ui/badge'
 import { Separator } from '@renderer/components/ui/separator'
 import { cn } from '@renderer/lib/utils'
-import type { OllamaModel, PullProgress } from '@renderer/types/ollama'
+import type { OllamaModel, PullProgress } from '@renderer/../../preload/index.d'
 
 interface RegistryModel {
   name: string
