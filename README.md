@@ -4,9 +4,19 @@
   <img src="build/icon.png" alt="HomeMind logo" width="180" />
 </p>
 
-Your personal AI, running at home. HomeMind is a desktop app that lets you chat with large language models entirely on your own machine — no cloud, no data leaving your device.
+Are you curious about AI, but it seems to serve someone else's best interest? HomeMind helps you set up your own personal AI, running on your own computer in your own home. HomeMind is a desktop app that lets you chat with large language models entirely on your own machine — no cloud, no signups, no data leaving your device.
 
 Built with Electron, React, TypeScript, and [Ollama](https://ollama.com).
+
+Here is what some influential people have to say about the HomeMind project:
+
+> Power to the people!
+
+-- someone, somewhere
+
+> An AI on every desk.
+
+-- Ty Coon
 
 ## Features
 
@@ -15,6 +25,24 @@ Built with Electron, React, TypeScript, and [Ollama](https://ollama.com).
 - **Model manager** — browse, download, and delete models from a built-in registry (Llama, Gemma, Phi, Qwen, Mistral, DeepSeek, and more)
 - **Configurable** — set a system prompt, adjust temperature, and configure context window size per session
 - **Bundled Ollama** — ships with the Ollama binary; no separate install needed
+
+## Download & Install
+
+Head to the [latest release](https://github.com/shinybluenails/homemind/releases/latest) and grab the installer for your platform.
+
+### Windows
+
+1. Download `homemind-x.x.x-setup.exe`
+2. Run the installer and follow the prompts
+3. Launch HomeMind from the Start menu or desktop shortcut
+
+### macOS
+
+1. Download `homemind-x.x.x.dmg`
+2. Open the `.dmg` and drag HomeMind to your **Applications** folder
+3. On first launch, right-click the app and choose **Open**
+
+> macOS may block the app on first run since it isn't notarized. If you see a "can't be opened" message, go to **System Settings → Privacy & Security** and click **Open Anyway**.
 
 ## Requirements
 
