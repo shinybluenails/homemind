@@ -1,20 +1,10 @@
+import { net } from 'electron'
 import { OLLAMA_HOST } from './ollama-process'
 
-// Node.js's built-in fetch uses undici internally with a 10-second default
-// headers timeout. Override the global dispatcher to remove that limit so
-// slow models (especially with tools on CPU) are never aborted mid-wait.
-;((): void => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const undici = require('node:undici') as {
-      setGlobalDispatcher: (a: unknown) => void
-      Agent: new (o: unknown) => unknown
-    }
-    undici.setGlobalDispatcher(new undici.Agent({ headersTimeout: 0, bodyTimeout: 0 }))
-  } catch {
-    // Best-effort — older Node doesn't expose this API
-  }
-})()
+// Use Electron's net.fetch (Chromium networking) instead of the Node.js global
+// fetch (undici), which imposes a 300-second headers timeout that fires before
+// a large model finishes its first inference.
+const apiFetch: typeof global.fetch = net.fetch.bind(net) as typeof global.fetch
 
 // Short timeout for quick non-streaming requests (list, delete).
 // Not used for chat/pull which stream for an unbounded duration.
@@ -26,7 +16,7 @@ async function fetchWithTimeout(
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), timeoutMs)
   try {
-    const res = await fetch(url, { ...init, signal: controller.signal })
+    const res = await apiFetch(url, { ...init, signal: controller.signal })
     return res
   } finally {
     clearTimeout(timer)
@@ -119,7 +109,7 @@ export async function deleteModel(name: string): Promise<void> {
 export async function* pullModel(
   name: string
 ): AsyncGenerator<PullProgress> {
-  const res = await fetch(`${OLLAMA_HOST}/api/pull`, {
+  const res = await apiFetch(`${OLLAMA_HOST}/api/pull`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, stream: true })
@@ -151,7 +141,7 @@ export async function* chat(
   }
 ): AsyncGenerator<ChatEvent> {
   const { tools, ...ollamaOptions } = options ?? {}
-  const res = await fetch(`${OLLAMA_HOST}/api/chat`, {
+  const res = await apiFetch(`${OLLAMA_HOST}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
